@@ -45,14 +45,3 @@ RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-
-COPY copy-kube-config.sh /usr/local/share/
-# socket. The script will also execute CMD if you need to alter startup behaviors.	RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
-ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]	    && echo "source /usr/local/share/copy-kube-config.sh" | tee -a /root/.bashrc /root/.zshrc /home/${USERNAME}/.bashrc >> /home/${USERNAME}/.zshrc
-CMD [ "sleep", "infinity" ]	
-
-RUN minikube config set driver docker
-RUN minikube start --force 
