@@ -24,6 +24,11 @@ RUN apt-get update \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
+# Install Minikube
+RUN wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+    && chmod +x minikube-linux-amd64 \
+    && mv minikube-linux-amd64 /usr/local/bin/minikube
+
 # Install kubectl
 RUN curl -sSL -o /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x /usr/local/bin/kubectl
@@ -41,10 +46,13 @@ RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 
-# Setting the ENTRYPOINT to docker-init.sh will configure non-root access to the Docker
-# socket. The script will also execute CMD if you need to alter startup behaviors.
-ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD [ "sleep", "infinity" ]
+COPY copy-kube-config.sh /usr/local/share/
+# socket. The script will also execute CMD if you need to alter startup behaviors.	RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
+ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]	    && echo "source /usr/local/share/copy-kube-config.sh" | tee -a /root/.bashrc /root/.zshrc /home/${USERNAME}/.bashrc >> /home/${USERNAME}/.zshrc
+CMD [ "sleep", "infinity" ]	
+
+RUN minikube config set driver docker
+RUN minikube start --force 
