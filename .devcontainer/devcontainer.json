@@ -41,7 +41,7 @@
 		"vscode-icons-team.vscode-icons",
 		"visualstudioexptteam.vscodeintellicode",
 		"ms-azuretools.vscode-docker",
-		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"ms-vscode.js-debug-nightly",
 		"ms-mssql.mssql"
 	],
 
