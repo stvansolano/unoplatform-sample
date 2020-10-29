@@ -11,7 +11,6 @@ A ready-to-use, templated GitHub Codespace that I regularly use for VS Code on G
 ## Batteries included
 
 - Docker
-- Kubernetes (WIP)
 - NodeJS
 - .NET 3.1
 
@@ -21,32 +20,13 @@ Extensions
 - Docker
 - C#
 
-## Installing Minikube
+## Uno Platform
 
-### Download Minikube
+Check for latest project templates! https://www.nuget.org/packages/Uno.ProjectTemplates.Dotnet
+    
+    dotnet new --install Uno.ProjectTemplates.Dotnet::3.1.6
 
-    wget https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x  minikube-linux-amd64 && sudo mv minikube-linux-amd64 /usr/local/bin/minikube
-
-    minikube config set driver docker
-
-### Start Minikube
-
-    minikube start --force --driver=docker
-    minikube version
-
-### Hello K8S!
-
-    kubectl run hello-kube --image=fhsinchy/hello-kube --port=80
-    kubectl get pod
-    kubectl expose pod hello-kube --type=LoadBalancer --port=80
-    minikube service hello-kube
-
-### Minikube commands
-    minikube addons enable ingress
-    kubectl get pods -n kube-system
-    minikube tunnel
+    dotnet new unoapp -o HelloWorld -ios=false -android=false -macos=false -uwp=false --vscodeWasm
 
 ## Resources
-- https://minikube.sigs.k8s.io/docs/start/
-- https://www.freecodecamp.org/news/the-kubernetes-handbook/#installing-kubernetes
-- https://www.katacoda.com/courses/kubernetes
+- https://platform.uno/blog/announcing-uno-platform-support-for-visual-studio-code/
