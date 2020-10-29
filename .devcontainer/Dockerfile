@@ -24,10 +24,11 @@ RUN apt-get update \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
-ENV NVM_DIR="/usr/local/share/nvm"
-ENV NVM_SYMLINK_CURRENT=true \
-    PATH=${NVM_DIR}/current/bin:${PATH}
-RUN apt-get update && bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}"
+# Install Node
+#ENV NVM_DIR="/usr/local/share/nvm"
+#ENV NVM_SYMLINK_CURRENT=true \
+#    PATH=${NVM_DIR}/current/bin:${PATH}
+#RUN apt-get update && bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}"
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
