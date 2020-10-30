@@ -25,14 +25,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
-      
-      - name: Setup MSBuild.exe
-        uses: warrenbuckley/Setup-MSBuild@v1
 
-      - name: MSBuild
+      - name: MSBuild Wasm
         working-directory: HelloWorld/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
           msbuild $csproj /r /p:Configuration=Release
 
+      - name: Upload artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: HelloWorld/HelloWorld.Wasm/bin/Release/netstandard2.0 # or path/to/artifact
         
