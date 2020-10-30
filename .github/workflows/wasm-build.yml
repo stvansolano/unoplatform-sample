@@ -17,8 +17,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     env:
-      working-directory=./HelloWorld
-
+        workingDirectory: ./HelloWorld
+        
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -35,10 +35,10 @@ jobs:
         working-directory: HelloWorld/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
-          msbuild $csproj /r /p:Configuration=Release /p:OutDir=${{env.working-directory}/publish /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
+          msbuild $csproj /r /p:Configuration=Release /p:OutDir=${{env.workingDirectory}/publish /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
           
       - uses: actions/upload-artifact@v2
         with:
           name: Upload artifact
           path: |
-            ${{env.working-directory}/publish
+            ${{env.workingDirectory}/publish
