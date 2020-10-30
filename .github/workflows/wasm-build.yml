@@ -33,6 +33,6 @@ jobs:
         
       - name: MSBuild call
         run: |
-          msbuild /r /p:Configuration=Release HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj
+          MSBuild.exe /r /p:Configuration=Release HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj
     
         
