@@ -146,8 +146,8 @@ namespace HelloWorld
 						// { "Windows.UI.Xaml.Controls.BufferViewCache", LogLevel.Debug }, //Android
 						// { "Windows.UI.Xaml.Controls.VirtualizingPanelGenerator", LogLevel.Debug }, //WASM
 					}
-				)
-				.AddConsole(LogLevel.Information);
+				);
+				//.AddConsole(LogLevel.Information);
 		}
     }
 }
