@@ -26,17 +26,13 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
       
-      - name: Setup VSWhere.exe
-      # You may pin to the exact commit or the version.
-      # uses: warrenbuckley/Setup-VSWhere@2cba433a185b61c3c0b10ea49ad86411e02eafd2
-        uses: warrenbuckley/Setup-VSWhere@v1
-        
-      - name: MSBuild call
+      - name: Setup MSBuild.exe
+        uses: warrenbuckley/Setup-MSBuild@v1
+
+      - name: MSBuild
+        working-directory: HelloWorld
         run: |
-          vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
-          $fileExe = "MSBuild.exe"
-          $filePath = "HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj"
-          & $fileExe $filePath /r /p:Configuration=Release
-            
-    
+          $csproj = "HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj"
+          msbuild $csproj /r /p:Configuration=Release
+
         
