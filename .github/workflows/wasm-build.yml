@@ -33,6 +33,10 @@ jobs:
         
       - name: MSBuild call
         run: |
-          MSBuild.exe /r /p:Configuration=Release HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj
+          vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          $fileExe = "MSBuild.exe"
+          $filePath = "HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj"
+          & $fileExe $filePath /r /p:Configuration=Release
+            
     
         
