@@ -31,10 +31,9 @@ jobs:
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
           msbuild $csproj /r /p:Configuration=Release
-
-      - name: Upload artifact
+          
       - uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
-          path: HelloWorld/HelloWorld.Wasm/bin/Release/netstandard2.0 # or path/to/artifact
-        
+          name: Upload artifact
+          path: |
+            HelloWorld/HelloWorld.Wasm/bin/Release/netstandard2.0 # or path/to/artifact
