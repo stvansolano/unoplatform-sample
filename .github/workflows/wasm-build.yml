@@ -33,10 +33,10 @@ jobs:
         working-directory: HelloWorld/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
-          msbuild $csproj /r /p:Configuration=Release /p:OutDir=${{env.DOTNET_ROOT}}/myapp
+          msbuild $csproj /r /p:Configuration=Release /p:OutDir=output/myapp /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
           
       - uses: actions/upload-artifact@v2
         with:
           name: Upload artifact
           path: |
-            ${{env.DOTNET_ROOT}}/myapp
+            output/myapp
