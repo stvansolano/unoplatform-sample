@@ -30,9 +30,9 @@ jobs:
         uses: warrenbuckley/Setup-MSBuild@v1
 
       - name: MSBuild
-        working-directory: HelloWorld
+        working-directory: HelloWorld/HelloWorld.Wasm
         run: |
-          $csproj = "HelloWorld/HelloWorld.Wasm/HelloWorld.Wasm.csproj"
+          $csproj = "HelloWorld.Wasm.csproj"
           msbuild $csproj /r /p:Configuration=Release
 
         
