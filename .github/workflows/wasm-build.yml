@@ -17,7 +17,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     env:
-        workingDirectory: ./HelloWorld
+        workingDirectory: /HelloWorld
         
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,12 +29,13 @@ jobs:
         run: |
           echo Hello, world!
           echo ${{env.workingDirectory}}
+          ls ${{env.workingDirectory}}
 
       - name: Setup MSBuild.exe	
         uses: warrenbuckley/Setup-MSBuild@v1
         
       - name: MSBuild Wasm
-        working-directory: HelloWorld/HelloWorld.Wasm
+        working-directory: ${{env.workingDirectory}}/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
           msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
@@ -43,4 +44,4 @@ jobs:
         with:
           name: Upload artifact
           path: |
-            /HelloWorld/HelloWorld.Wasm/bin/Release/netstandard2.0
+            ${{env.workingDirectory}}/HelloWorld.Wasm/bin/Release
