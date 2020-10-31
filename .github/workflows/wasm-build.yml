@@ -26,7 +26,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: |
+          echo Hello, world!
+          echo ${{env.workingDirectory}}
 
       - name: Setup MSBuild.exe	
         uses: warrenbuckley/Setup-MSBuild@v1
@@ -35,10 +37,10 @@ jobs:
         working-directory: HelloWorld/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
-          msbuild $csproj /r /p:Configuration=Release /p:OutDir=${{env.workingDirectory}}/publish /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
+          msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
           
       - uses: actions/upload-artifact@v2
         with:
           name: Upload artifact
           path: |
-            ${{env.workingDirectory}}/publish
+            /HelloWorld/HelloWorld.Wasm/bin/Release/netstandard2.0
