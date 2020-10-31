@@ -44,4 +44,4 @@ jobs:
         with:
           name: Upload artifact
           path: |
-            ${{env.workingDirectory}}/HelloWorld.Wasm/bin/Release
+            ${{env.workingDirectory}}/HelloWorld.Wasm/bin/Release/dist
