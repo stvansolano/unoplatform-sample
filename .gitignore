@@ -2,3 +2,5 @@
 **/bin/Obj/
 HelloWorld/**/bin/
 HelloWorld/**/obj/
+
+wasm-server/node_modules/
