@@ -9,6 +9,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths:
+    - '.github/workflows/wasm-build.yml'
+    - 'HelloWorld'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,7 +34,7 @@ jobs:
           echo ${{env.workingDirectory}}
           ls ${{env.workingDirectory}}
 
-      - name: Setup MSBuild.exe	
+      - name: Setup MSBuild.exe
         uses: warrenbuckley/Setup-MSBuild@v1
         
       - name: MSBuild Wasm
@@ -43,5 +46,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Upload artifact
+          retention-days: 5
           path: |
             ${{env.workingDirectory}}/HelloWorld.Wasm/bin/Release/dist

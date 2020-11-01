@@ -36,8 +36,7 @@ jobs:
         working-directory: ${{env.workingDirectory}}/HelloWorld.Wasm
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
-          msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false
-          cp -R ${{env.workingDirectory}}/HelloWorld.Wasm/bin/Release/dist wasm-server/dist
+          msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false /p:OutDir=wasm-server
 
       - name: SWA Build and Deploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
