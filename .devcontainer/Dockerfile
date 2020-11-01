@@ -21,16 +21,17 @@ RUN apt-get update \
     && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${SOURCE_SOCKET}" "${TARGET_SOCKET}" "${USERNAME}" \
-    # Install Dapr
-    && wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
 # Install Node
-#ENV NVM_DIR="/usr/local/share/nvm"
-#ENV NVM_SYMLINK_CURRENT=true \
-#    PATH=${NVM_DIR}/current/bin:${PATH}
-#RUN apt-get update && bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}"
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN apt-get install -y nodejs
+
+# Setting the ENTRYPOINT to docker-init.sh will configure non-root access to the Docker
+# socket. The script will also execute CMD if you need to alter startup behaviors.
+#ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
+#CMD [ "sleep", "infinity" ]
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
