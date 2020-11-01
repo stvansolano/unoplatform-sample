@@ -16,16 +16,16 @@ on:
 jobs:
   build_wasm_job:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    steps:
-      - uses: actions/checkout@v2
-
-  build_and_deploy_job:
-    needs: [build_wasm_job]
-    
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    # The type of runner that the job will run on
-    runs-on: windows-latest
+    
+  # name: Build and Deploy Job
+  # steps:
+  #   - uses: actions/checkout@v2
+
+  #build_and_deploy_job:
+  #  needs: [build_wasm_job]  
+  # The type of runner that the job will run on
+  #  runs-on: windows-latest
     env:
         workingDirectory: HelloWorld
         # Steps represent a sequence of tasks that will be executed as part of the job
@@ -35,15 +35,21 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.200'
 
-      - name: Setup MSBuild.exe
-        uses: warrenbuckley/Setup-MSBuild@v1
-        
-      - name: MSBuild Wasm
-        working-directory: ${{env.workingDirectory}}/HelloWorld.Wasm
+      - name: Build with dotnet
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
-          msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false /p:OutDir=wasm-server
+          msbuild /r /p:BuildPlatformTarget=Wasm $csproj
+          msbuild /r /p:Configuration=Release $csproj  
+        #"/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" 
+
+        #cd $(build.sourcesdirectory)
+        #msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false /p:OutDir=wasm-server
 
       - name: SWA Build and Deploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
