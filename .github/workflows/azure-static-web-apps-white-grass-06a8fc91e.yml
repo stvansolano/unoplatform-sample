@@ -14,11 +14,18 @@ on:
     - 'HelloWorld'
 
 jobs:
+  build_wasm_job:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v2
+
   build_and_deploy_job:
+    needs: [build_wasm_job]
+    
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     # The type of runner that the job will run on
     runs-on: windows-latest
-    #runs-on: ubuntu-latest
     env:
         workingDirectory: HelloWorld
         # Steps represent a sequence of tasks that will be executed as part of the job
