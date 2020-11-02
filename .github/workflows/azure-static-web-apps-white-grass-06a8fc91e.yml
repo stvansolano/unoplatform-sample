@@ -21,13 +21,14 @@ jobs:
   # name: Build and Deploy Job
   # steps:
   #   - uses: actions/checkout@v2
-
   #build_and_deploy_job:
   #  needs: [build_wasm_job]  
   # The type of runner that the job will run on
   #  runs-on: windows-latest
     env:
         workingDirectory: HelloWorld
+        EMSDK_VERSION: 1.40.0
+
         # Steps represent a sequence of tasks that will be executed as part of the job
 
     name: Build and Deploy Job
@@ -41,13 +42,33 @@ jobs:
         with:
           dotnet-version: '3.1.200'
 
+      - name: Bash run script
+        run: |
+          git clone https://github.com/emscripten-core/emsdk ~/emsdk/ --branch ${{env.EMSDK_VERSION}}
+          ~/emsdk install ${{env.EMSDK_VERSION}}
+          ~/emsdk activate ${{env.EMSDK_VERSION}}
+          mkdir -p bin/wasm
+
+          source ~/emsdk/emsdk_env.sh
+          echo Generating LLVM Bitcode files
+          emcc \
+            -std=c++17 \
+            -s WASM=1 \
+            -s LEGALIZE_JS_FFI=0 \
+            -s RESERVED_FUNCTION_POINTERS=64 \
+              -s ALLOW_MEMORY_GROWTH=1 \
+            -s BINARYEN=1 \
+            -s DISABLE_EXCEPTION_CATCHING=0 \
+            -o bin/wasm/CalcManager.bc \
+            -r \
+            CEngine/*.cpp Ratpack/*.cpp *.cpp -I.
       - name: Build with dotnet
         run: |
           $csproj = "HelloWorld.Wasm.csproj"
+          source ~/emsdk/emsdk_env.sh
           msbuild /r /p:BuildPlatformTarget=Wasm $csproj
           msbuild /r /p:Configuration=Release $csproj  
-        #"/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" 
-
+        #"/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION"   
         #cd $(build.sourcesdirectory)
         #msbuild $csproj /r /p:Configuration=Release /p:UnoSourceGeneratorUseGenerationHost=true /p:UnoSourceGeneratorUseGenerationController=false /p:OutDir=wasm-server
 
